@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto News of the Day</title>
+</head>
+<style>
+    .container {
+    width: 1300px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    }
+
+    .container img {
+    width: 100px;
+    margin-right: 50px;
+    }
+
+    table {
+        border: 1px solid black;
+    }
+
+    table tr {
+        border: 1px solid black;
+    }
+
+</style>
+<body>
+    <h1>Crypto News of the Day</h1>
+
+    <table>
+        <tr data-th-each="article : ${newsList}">
+            <div class="container">
+                <img data-th-src="@{{link}(link=${article.imageurl})}" alt="">
+                <div>
+                    <h5>Id: <span data-th-text="${article.id}"></span></h5>
+                    <hr>
+                    <h3 data-th-text="${article.title}"></h3>
+                    <p data-th-text="${article.body}"></p>
+                    <p>
+                        <h6>Categories: <span data-th-text="${article.categories}"></span></h6>
+                        <h6>Tags: <span data-th-text="${article.tags}"></span></h6>
+                    </p>
+                    <p>
+                        <h6>Published: <span data-th-text="${article.publishedOn}"></span></h6>
+                        <a data-th-href="@{{link}(link=${article.url})}">Link</a>
+                    </p>
+                    
+                </div>
+            </div>
+        </tr>
+    </table>
+</body>
+</html>
