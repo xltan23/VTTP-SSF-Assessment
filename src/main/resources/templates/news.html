@@ -29,7 +29,7 @@
 </style>
 <body>
     <h1>Crypto News of the Day</h1>
-    
+
     <table>
         <tr data-th-each="article : ${newsList}">
             <form action="/news/articles" method="POST">
@@ -58,7 +58,8 @@
                         <input type="hidden" name="body" data-th-value="${article.body}">
                         <input type="hidden" name="tags" data-th-value="${article.tags}">
                         <input type="hidden" name="categories" data-th-value="${article.categories}">
-
+                        <label for="checksave">Save</label>
+                        <input type="checkbox" name="checksave">
                     </div>
                 </div>
             </form>

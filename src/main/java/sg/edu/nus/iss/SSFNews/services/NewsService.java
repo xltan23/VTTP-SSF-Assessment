@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -78,15 +79,38 @@ public class NewsService {
         return newsList;
     } 
 
-    // Performing single article saving
-    public void saveArticle(News article) {
+    // Performing single article saving (Unsuccessful List<News> articles saving)
+    public void saveArticles(News article) {
         // Preparation for loop over list of articles
         // Convert News article to JSON object
         JsonObject jsonArticle = article.toJson(); 
+        // Retrieve the JSON ID to be used as Key for Redis
+        String jsonId = jsonArticle.getString("id");
         ValueOperations<String,String> ops = redisTemplate.opsForValue();
-        int i = 1;
-        // Set keys : article1, article2, article3.... 
-        // Set corresponding values: JSON strings
-        ops.set("article%d".formatted(i), jsonArticle.toString());
+        System.out.printf("Saving to %s\n", jsonId);
+        ops.set("%s".formatted(jsonId), jsonArticle.toString());
+    }
+
+    // // Performing multiple articles saving
+    // public void saveArticles(List<News> articles) {
+    //     // Preparation for loop over list of articles
+    //     // Convert News article to JSON object
+    //     // Set keys : article1, article2, article3.... 
+    //     // Set corresponding values: JSON strings
+    //     ValueOperations<String,String> ops = redisTemplate.opsForValue();
+    //     for (int i = 0; i < articles.size(); i++) {
+    //         JsonObject jsonArticle = articles.get(i).toJson(); 
+    //         ops.set("article%d".formatted(i), jsonArticle.toString());
+    //     }
+    // }
+
+    // Box creation => If id present, box contains news otherwise box is empty
+    public Optional<News> get(String id) {
+        ValueOperations<String,String> valueOps = redisTemplate.opsForValue();
+        String newsResult = valueOps.get(id);
+        if (null == newsResult) {
+            return Optional.empty();
+        }
+        return Optional.of(News.create(newsResult));
     }
 }
