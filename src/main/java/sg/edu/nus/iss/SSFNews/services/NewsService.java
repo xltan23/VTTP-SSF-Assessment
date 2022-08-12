@@ -1,12 +1,15 @@
 package sg.edu.nus.iss.SSFNews.services;
 
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,10 @@ public class NewsService {
 
     @Value("${API_KEY}")
     private String key;
+
+    @Autowired
+    @Qualifier("redislab")
+    private RedisTemplate<String,String> redisTemplate;
 
     public List<News> getArticles() {
         String payload;
@@ -71,7 +78,15 @@ public class NewsService {
         return newsList;
     } 
 
-    public void saveArticles(List<News> articles) {
-        
+    // Performing single article saving
+    public void saveArticle(News article) {
+        // Preparation for loop over list of articles
+        // Convert News article to JSON object
+        JsonObject jsonArticle = article.toJson(); 
+        ValueOperations<String,String> ops = redisTemplate.opsForValue();
+        int i = 1;
+        // Set keys : article1, article2, article3.... 
+        // Set corresponding values: JSON strings
+        ops.set("article%d".formatted(i), jsonArticle.toString());
     }
 }
