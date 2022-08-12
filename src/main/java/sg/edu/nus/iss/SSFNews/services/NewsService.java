@@ -70,4 +70,8 @@ public class NewsService {
         }
         return newsList;
     } 
+
+    public void saveArticles(List<News> articles) {
+        
+    }
 }

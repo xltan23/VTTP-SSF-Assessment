@@ -29,28 +29,41 @@
 </style>
 <body>
     <h1>Crypto News of the Day</h1>
-
+    
     <table>
         <tr data-th-each="article : ${newsList}">
-            <div class="container">
-                <img data-th-src="@{{link}(link=${article.imageurl})}" alt="">
-                <div>
-                    <h5>Id: <span data-th-text="${article.id}"></span></h5>
-                    <hr>
-                    <h3 data-th-text="${article.title}"></h3>
-                    <p data-th-text="${article.body}"></p>
-                    <p>
-                        <h6>Categories: <span data-th-text="${article.categories}"></span></h6>
-                        <h6>Tags: <span data-th-text="${article.tags}"></span></h6>
-                    </p>
-                    <p>
-                        <h6>Published: <span data-th-text="${article.publishedOn}"></span></h6>
-                        <a data-th-href="@{{link}(link=${article.url})}">Link</a>
-                    </p>
-                    
+            <form action="/news/articles" method="POST">
+                <input type="submit" value="Save">
+                <div class="container">
+                    <img data-th-src="@{{link}(link=${article.imageurl})}" alt="">
+                    <div>
+                        <h5>Id: <span data-th-text="${article.id}"></span></h5>
+                        <hr>
+                        <h3 data-th-text="${article.title}"></h3>
+                        <p data-th-text="${article.body}"></p>
+                        <p>
+                            <h6>Categories: <span data-th-text="${article.categories}"></span></h6>
+                            <h6>Tags: <span data-th-text="${article.tags}"></span></h6>
+                        </p>
+                        <p>
+                            <h6>Published: <span data-th-text="${article.publishedOn}"></span></h6>
+                            <a data-th-href="@{{link}(link=${article.url})}">Link</a>
+                        </p>
+                        
+                        <input type="hidden" name="id" data-th-value="${article.id}">
+                        <input type="hidden" name="published" data-th-value="${article.publishedOn}">
+                        <input type="hidden" name="title" data-th-value="${article.title}">
+                        <input type="hidden" name="url" data-th-value="${article.url}">
+                        <input type="hidden" name="imageurl" data-th-value="${article.imageurl}">
+                        <input type="hidden" name="body" data-th-value="${article.body}">
+                        <input type="hidden" name="tags" data-th-value="${article.tags}">
+                        <input type="hidden" name="categories" data-th-value="${article.categories}">
+
+                    </div>
                 </div>
-            </div>
+            </form>
         </tr>
-    </table>
+    </table>            
+    
 </body>
 </html>
